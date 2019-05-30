@@ -44,3 +44,4 @@ This will package the application in a docker container and start it. Logs can b
 
  ./gradlew clean release -Prelease.useAutomaticVersion=true
 
+==

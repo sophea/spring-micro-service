@@ -11,7 +11,7 @@
 environment=$1
 
 if [[ $environment == "TEST" ]]; then
-    PROJECT_ID=virgin-red-test2
+    PROJECT_ID=xxxxx
     COMPUTE_ZONE=europe-west1-b
     CLUSTER=test-cluster
 elif [[ $environment == "OPS" ]]; then
@@ -37,11 +37,11 @@ gcloud config set project $PROJECT_ID
 
 gcloud config set compute/zone $COMPUTE_ZONE
 
-#select custer :  virgin-cluster-dev for dev2  ,  test-cluster for test
+#select custer :  xxx-cluster-dev for dev2  ,  test-cluster for test
 gcloud container clusters get-credentials $CLUSTER
 
 ##deploy services : PODs
-#source virgin-backend-deployment.sh
+#source demo-backend-deployment.sh
 
 ##create service as load
 kubectl apply -f demo-backend-deployment.yml
