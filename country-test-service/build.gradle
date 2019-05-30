@@ -1,0 +1,255 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.4.RELEASE'
+    }
+    repositories {
+        jcenter()
+        //mavenCentral()
+        maven { url 'https://nexus.dminc-gtc.com/nexus/content/groups/public/' }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath('net.researchgate:gradle-release:2.4.0')
+        classpath('com.bmuschko:gradle-nexus-plugin:2.3.1')
+        classpath('io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE')
+        classpath 'com.bmuschko:gradle-docker-plugin:3.3.6'
+
+    }
+}
+
+plugins {
+    id 'net.researchgate.release' version '2.4.0'
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://raw.github.com/sophea/mvn-repo/master/releases" }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'com.bmuschko.docker-remote-api'
+apply plugin: 'net.researchgate.release'
+apply plugin: com.bmuschko.gradle.nexus.NexusPlugin
+
+bootJar {
+    launchScript()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+configurations {
+    providedRuntime
+}
+
+configurations.runtime {
+    exclude group: 'ant', module: 'ant'
+    exclude group: 'com.ibm.websphere'
+    exclude group: 'org.apache.geronimo.specs'
+    exclude group: 'org.apache.tiles', module: 'tiles-extras'
+    exclude group: 'org.apache.tiles', module: 'tiles-request-freemarker'
+    exclude group: 'org.codehaus.jackson'
+
+    exclude module: 'jamon'
+    exclude module: 'spring-instrument'
+    exclude group:'org.slf4j', module: 'slf4j-log4j12'
+    exclude group: 'org.slf4j', module: 'slf4j-jdk14'
+    all*.exclude group: 'commons-logging', module: 'commons-logging'
+
+}
+
+processResources {
+    filesMatching('application.properties') {
+        expand(project.properties)
+    }
+}
+
+
+apply plugin: 'pmd'
+apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
+
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled false
+        html.enabled true
+    }
+}
+
+
+findbugs {
+    effort = 'max'
+    reportLevel = 'low'
+    excludeFilter = file("$rootProject.projectDir/excludeFilter.xml")
+}
+
+pmd {
+    ruleSets = [
+            "java-basic",
+            "java-braces",
+            "java-android",
+            "java-clone",
+            "java-codesize",
+            "java-design",
+            "java-finalizers",
+            "java-imports",
+            "java-j2ee",
+            "java-junit",
+            "java-logging-jakarta-commons",
+            "java-migrating",
+            "java-strictexception",
+            "java-strings",
+            "java-sunsecure",
+            "java-typeresolution"
+    ]
+    ignoreFailures = false
+}
+checkstyle {
+    toolVersion = "6.19"
+    configFile = new File(rootDir, "checkstyle.xml")
+    ignoreFailures = false
+}
+
+dependencies {
+    //tomcat
+    compile('org.springframework.boot:spring-boot-starter-webflux'){ exclude module: "spring-boot-starter-netty"}
+    runtime("org.springframework.boot:spring-boot-properties-migrator")
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+    compile('com.goldengekko:core-server:2.0.1')
+    compile("org.springframework.boot:spring-boot-devtools")
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.apache.httpcomponents:httpclient:4.5.6")
+
+    compile ('org.springframework.security:spring-security-core:4.2.3.RELEASE'  ) {
+        transitive = false
+    }
+    compile('org.apache.commons:commons-lang3:3.5')
+    compile('io.springfox:springfox-swagger2:2.9.2')
+    compile('io.springfox:springfox-swagger-ui:2.9.2')
+    compile 'commons-codec:commons-codec:1.8'
+    compile 'org.projectlombok:lombok:1.18.2'
+    testCompile("junit:junit")
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('io.projectreactor:reactor-test')
+}
+
+class BuildInfoTask extends DefaultTask {
+    @TaskAction
+    def calculateBuildInfo() {
+        println "Calculating build info..."
+        String currentBranch = "git rev-parse --abbrev-ref HEAD".execute().text;
+        String lastCommits = "git log --max-count=10".execute().text;
+        String output = "Service 'configuration' compiled from " + currentBranch.trim() + " branch on " + new Date() + " by user " + System.getProperty("user.name") + " on " + java.net.InetAddress.getLocalHost().getHostName() + " host.\n";
+        output += "Last git commits in the branch:\n\n" + lastCommits + "\n\n";
+        String filename = project.buildDir.canonicalPath + '/resources/main/buildInfo.txt';
+        println "Build info written to " + filename;
+        def file = new File(filename);
+        file.write(output);
+    }
+}
+
+class DockerPushTask extends DefaultTask {
+    @TaskAction
+    def dockerPushInfo() {
+        "bash scripts/docker-push-image.sh".execute().text;
+    }
+}
+
+task generateBuildInfo(type: BuildInfoTask);
+
+project.tasks.jar.dependsOn generateBuildInfo
+project.tasks.bootRun.dependsOn generateBuildInfo
+
+defaultTasks 'bootRun'
+
+
+
+bootRun {
+//    addResources = true
+    systemProperties System.properties
+    jvmArgs = ["-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006"]
+}
+
+task copyJarToCanonicalName(type: Copy) {
+    dependsOn build
+    from jar // shortcut for createJar.outputs.files
+    into 'build/libs/'
+    rename { String fileName -> "app.jar" }
+}
+
+
+docker {
+    if (System.env.containsKey('DOCKER_HOST') && System.env.containsKey('DOCKER_CERT_PATH')) {
+        url = System.env.DOCKER_HOST.replace("tcp", "https")
+        certPath = new File(System.env.DOCKER_CERT_PATH)
+    }
+}
+
+//def registryUrl = 'nexus.dminc-gtc.com:50000'
+def registryUrl = 'gcr.io/nifty-linker-484'
+def dockerImageName = 'country-service'
+def tagVersion = 'latest'
+
+task dockerBuildImage(type: com.bmuschko.gradle.docker.tasks.image.DockerBuildImage) {
+    dependsOn copyJarToCanonicalName
+
+    inputDir = new File('./')
+    tag = dockerImageName + ':' + project.version
+}
+
+task dockerTagImageForNexus(type: com.bmuschko.gradle.docker.tasks.image.DockerTagImage) {
+    dependsOn dockerBuildImage
+    imageId = dockerImageName + ':' + project.version
+    repository = registryUrl + '/' + dockerImageName
+    tag =  project.version
+
+}
+
+task dockerPush(type: DockerPushTask) {
+    dependsOn dockerTagImageForNexus
+}
+
+task dockerPush2(type: com.bmuschko.gradle.docker.tasks.image.DockerPushImage) {
+    dependsOn dockerTagImageForNexus
+    imageName = "$registryUrl/$dockerImageName"
+}
+
+task dockerCreate(type: com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer) {
+    dependsOn dockerBuildImage
+    if (project.hasProperty('activeProfile')) {
+        env = ['activeProfile=' + activeProfile]
+    } else {
+        logger.warn("Expecting an activeProfile property, pass -PactiveProfile=xxx, where xxx can be DEVELOPMENT, TEST, STAGE, ... Assuming DEVELOPMENT")
+        env = ['activeProfile=DEVELOPMENT', 'debuggerPort=5000','main_database_host=172.17.0.1']
+    }
+    containerName = dockerImageName
+    //networkMode = 'host'
+    imageId = dockerBuildImage.getTag()
+}
+
+task dockerStart(type: com.bmuschko.gradle.docker.tasks.container.DockerStartContainer) {
+    dependsOn dockerCreate
+    targetContainerId { dockerCreate.getContainerId() }
+}
+
+task dockerStop(type: com.bmuschko.gradle.docker.tasks.container.DockerRemoveContainer) {
+    force = true
+    containerId = dockerImageName
+}
+
+
+nexus {
+    sign = false
+    repositoryUrl = "https://nexus.dminc-gtc.com/nexus/content/repositories/releases/"
+    snapshotRepositoryUrl = "https://nexus.dminc-gtc.com/nexus/content/repositories/snapshots/"
+}
+
+extraArchive {
+    javadoc = false
+    sources = false
+}
+//project.tasks.uploadArchives.dependsOn dockerPush
+tasks.afterReleaseBuild.dependsOn dockerPush
