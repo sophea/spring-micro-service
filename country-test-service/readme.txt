@@ -39,9 +39,12 @@ This will package the application in a docker container and start it. Logs can b
 
 ```
 
-
  ==== release new version GIT
 
  ./gradlew clean release -Prelease.useAutomaticVersion=true
 
-==
+
+
+===spring-cloude-gcp package ======
+using spring-cloud-datastore service, make sure creating cluster enable the permission
+Permissions: Cloud Datastore : Enabled

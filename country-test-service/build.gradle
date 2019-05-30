@@ -20,9 +20,10 @@ plugins {
 }
 
 repositories {
-    mavenCentral()
+    jcenter()
     maven { url "https://raw.github.com/sophea/mvn-repo/master/releases" }
     maven { url "https://nexus.dminc-gtc.com/nexus/content/groups/public/" }
+
 }
 
 apply plugin: 'java'

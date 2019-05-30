@@ -5,14 +5,14 @@
 ##################################################################
 
  PROJECT_ID=nifty-linker-484
- COMPUTE_ZONE=asia-south1-a
- CLUSTER=standard-cluster-1
+ COMPUTE_ZONE=asia-southeast1-b
+ CLUSTER=demo
 
 environment=$1
 
 if [[ $environment == "TEST" ]]; then
-    PROJECT_ID=xxxxx
-    COMPUTE_ZONE=europe-west1-b
+    PROJECT_ID=nifty-linker-484
+    COMPUTE_ZONE=asia-southeast1-a
     CLUSTER=test-cluster
 elif [[ $environment == "OPS" ]]; then
     PROJECT_ID=nifty-linker-484
