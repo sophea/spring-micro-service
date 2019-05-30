@@ -17,7 +17,7 @@ spec:
       containers:
       - name: country-service
         # Replace [GCLOUD_PROJECT] with your project ID.
-        image: gcr.io/nifty-linker-484/country-service:1.0.2-SNAPSHOT
+        image: gcr.io/nifty-linker-484/country-service:1.0.3-SNAPSHOT
         volumeMounts:
         - mountPath: /app/application.properties
           name: config-file
