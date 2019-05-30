@@ -2,11 +2,7 @@ buildscript {
     ext {
         springBootVersion = '2.0.4.RELEASE'
     }
-    repositories {
-        jcenter()
-        //mavenCentral()
-        maven { url 'https://nexus.dminc-gtc.com/nexus/content/groups/public/' }
-    }
+
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath('net.researchgate:gradle-release:2.4.0')
@@ -24,6 +20,7 @@ plugins {
 repositories {
     mavenCentral()
     maven { url "https://raw.github.com/sophea/mvn-repo/master/releases" }
+    maven { url "https://nexus.dminc-gtc.com/nexus/content/groups/public/" }
 }
 
 apply plugin: 'java'
@@ -118,13 +115,17 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-webflux'){ exclude module: "spring-boot-starter-netty"}
     runtime("org.springframework.boot:spring-boot-properties-migrator")
     compile('org.springframework.boot:spring-boot-starter-actuator')
-    compile('com.goldengekko:core-server:2.0.1')
     compile("org.springframework.boot:spring-boot-devtools")
     compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-aop")
+
     compile("org.apache.httpcomponents:httpclient:4.5.6")
 
     compile ('org.springframework.security:spring-security-core:4.2.3.RELEASE'  ) {
         transitive = false
+    }
+    compile ('com.dminc.backend.common.tools:backend-common-tools:1.0.14') {
+        changing = false
     }
     compile('org.apache.commons:commons-lang3:3.5')
     compile('io.springfox:springfox-swagger2:2.9.2')

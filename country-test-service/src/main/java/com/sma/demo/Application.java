@@ -1,4 +1,4 @@
-package com.dmi.demo;
+package com.sma.demo;
 
 import java.io.IOException;
 import java.util.TimeZone;
@@ -15,10 +15,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 
-import com.dmi.config.AppConfig;
-import com.dmi.config.SwaggerConfig;
-import com.dmi.filter.BasicAuthenticationFilter;
-import com.dmi.filter.TracerRequestFilter;
+import com.sma.config.AppConfig;
+import com.sma.config.SwaggerConfig;
+import com.sma.filter.BasicAuthenticationFilter;
+import com.sma.filter.TracerRequestFilter;
 
 import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFactory;

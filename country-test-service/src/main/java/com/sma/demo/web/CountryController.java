@@ -1,4 +1,4 @@
-package com.dmi.demo.web;
+package com.sma.demo.web;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dmi.demo.json.JCountry;
+import com.sma.demo.json.JCountry;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

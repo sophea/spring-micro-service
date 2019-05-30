@@ -1,4 +1,4 @@
-package com.dmi.demo.json;
+package com.sma.demo.json;
 
 import lombok.Builder;
 import lombok.Data;

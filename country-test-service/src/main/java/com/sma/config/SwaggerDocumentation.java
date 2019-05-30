@@ -1,4 +1,4 @@
-package com.dmi.config;
+package com.sma.config;
 
 public final class SwaggerDocumentation {
 

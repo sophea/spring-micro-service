@@ -1,4 +1,4 @@
-package com.dmi.filter;
+package com.sma.filter;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -25,7 +25,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.goldengekko.coreserver.BusinessException;
+import com.dminc.common.tools.exceptions.InternalBusinessException;
 
 @SuppressWarnings("PMD")
 public class TracerRequestFilter implements Filter {
@@ -170,7 +170,7 @@ public class TracerRequestFilter implements Filter {
 
             @Override
             public void setReadListener(ReadListener listener) {
-                throw new BusinessException("Not implemented");
+                throw new InternalBusinessException("Not implemented");
             }
         }
     }

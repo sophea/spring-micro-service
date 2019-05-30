@@ -1,4 +1,4 @@
-package com.dmi.config;
+package com.sma.config;
 
 import java.util.Collections;
 
@@ -19,7 +19,7 @@ public class SwaggerConfig {
 
     @Bean
     public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.basePackage("com.dmi"))
+        return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.basePackage("com.sma"))
                 .paths(PathSelectors.any()).build()
                 .apiInfo(apiInfo());
     }
@@ -27,11 +27,11 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfo(
-                "Virgin Countires Service REST API",
-                "Virgin Countires Service of API.",
+                "Countires Service REST API",
+                "Countires Service of API.",
                 "API",
                 "Terms of service",
-                new Contact("Sophea MAK", "-", "smak@dminc.com"),
+                new Contact("Sophea MAK", "-", "sopheamak@gmail.com"),
                 "License of API", "API license URL", Collections.emptyList());
     }
 }

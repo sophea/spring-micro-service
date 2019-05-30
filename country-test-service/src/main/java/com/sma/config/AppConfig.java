@@ -1,4 +1,4 @@
-package com.dmi.config;
+package com.sma.config;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -14,6 +14,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.ServletRequestBindingException;
@@ -24,10 +25,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceView;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import com.dminc.common.tools.RestJsonExceptionResolver;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.goldengekko.coreserver.web.rest.RestJsonExceptionResolver;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -88,15 +89,14 @@ public class AppConfig implements WebMvcConfigurer {
         RestJsonExceptionResolver.registerExceptionWithHTTPCode(MissingServletRequestParameterException.class, 400);
         RestJsonExceptionResolver.registerExceptionWithHTTPCode(MethodArgumentNotValidException.class, 400);
         RestJsonExceptionResolver.registerExceptionWithHTTPCode(ServletRequestBindingException.class, 400);
+        RestJsonExceptionResolver.registerExceptionWithHTTPCode(AccessDeniedException.class, 403);
 
-        // bean.setErrorIdGenerator(new GaeErrorIdGenerator());
-        bean.setOrder(100);
+        bean.setOrder(1);
 
         bean.setDiagnosticsDisabled(Boolean.parseBoolean(getProperty("json.diagnosticsDisabled")));
         // set general error message
-        RestJsonExceptionResolver.setCustomMsg(getProperty("json.errormsg"));
+        RestJsonExceptionResolver.setCustomMessage(getProperty("json.errormsg"));
 
-        bean.setOrder(100);
         return bean;
     }
 

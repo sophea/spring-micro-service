@@ -1,4 +1,4 @@
-package com.dmi.demo.web;
+package com.sma.demo.web;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dmi.demo.json.HealthStatus;
+import com.sma.demo.json.HealthStatus;
 
 import io.swagger.annotations.Api;
 

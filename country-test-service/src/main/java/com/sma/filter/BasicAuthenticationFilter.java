@@ -1,4 +1,4 @@
-package com.dmi.filter;
+package com.sma.filter;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -61,7 +61,7 @@ public class BasicAuthenticationFilter extends OncePerRequestFilter {
         final String pwd = getClientPassword(authValue);
 
         if (!(username.equals(clientId) && secret.equals(pwd))) {
-            response.setHeader("WWW-Authenticate", "Basic realm=\"assignment\"");
+            response.setHeader("WWW-Authenticate", "Basic realm=\"Backend\"");
             response.setStatus(401);
             return false;
         }
