@@ -1,5 +1,5 @@
 # spring-micro-service
-backend springboot microservices using GKE
+backend springboot microservices and deploy into GKE
 
 
 ==== Deploy docker micro-services into GKE====
