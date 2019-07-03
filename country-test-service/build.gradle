@@ -206,7 +206,8 @@ docker {
 }
 
 //def registryUrl = 'nexus.dminc-gtc.com:50000'
-def registryUrl = 'gcr.io/nifty-linker-484'
+//def registryUrl = 'gcr.io/nifty-linker-484'
+def registryUrl = 'docker.io/sopheamak'
 def dockerImageName = 'country-service'
 def tagVersion = 'latest'
 
