@@ -62,35 +62,35 @@ public class AppConfig implements WebMvcConfigurer {
     }
 
     // -------------- Controllers ----------------------
-
+    /*
     private String getProperty(final String key) {
         return env.getProperty(key);
     }
+    */
+    /*
+    @Override
+    public void configureHandlerExceptionResolvers(final List<HandlerExceptionResolver> exceptionResolvers) {
+        exceptionResolvers.add(restJsonExceptionResolver());
+    }
 
-    // -------------- View Stuff -----------------------
+        @Bean
+    public RestJsonExceptionResolver restJsonExceptionResolver() {
+        final RestJsonExceptionResolver bean = new RestJsonExceptionResolver();
+        RestJsonExceptionResolver.registerExceptionWithHTTPCode(org.springframework.beans.TypeMismatchException.class, 400);
+        RestJsonExceptionResolver.registerExceptionWithHTTPCode(MissingServletRequestParameterException.class, 400);
+        RestJsonExceptionResolver.registerExceptionWithHTTPCode(MethodArgumentNotValidException.class, 400);
+        RestJsonExceptionResolver.registerExceptionWithHTTPCode(ServletRequestBindingException.class, 400);
+        RestJsonExceptionResolver.registerExceptionWithHTTPCode(AccessDeniedException.class, 403);
 
-//    @Override
-//    public void configureHandlerExceptionResolvers(final List<HandlerExceptionResolver> exceptionResolvers) {
-//        exceptionResolvers.add(restJsonExceptionResolver());
-//    }
+        bean.setOrder(1);
 
-//    @Bean
-//    public RestJsonExceptionResolver restJsonExceptionResolver() {
-//        final RestJsonExceptionResolver bean = new RestJsonExceptionResolver();
-//        RestJsonExceptionResolver.registerExceptionWithHTTPCode(org.springframework.beans.TypeMismatchException.class, 400);
-//        RestJsonExceptionResolver.registerExceptionWithHTTPCode(MissingServletRequestParameterException.class, 400);
-//        RestJsonExceptionResolver.registerExceptionWithHTTPCode(MethodArgumentNotValidException.class, 400);
-//        RestJsonExceptionResolver.registerExceptionWithHTTPCode(ServletRequestBindingException.class, 400);
-//        RestJsonExceptionResolver.registerExceptionWithHTTPCode(AccessDeniedException.class, 403);
-//
-//        bean.setOrder(1);
-//
-//        bean.setDiagnosticsDisabled(Boolean.parseBoolean(getProperty("json.diagnosticsDisabled")));
-//        // set general error message
-//        RestJsonExceptionResolver.setCustomMessage(getProperty("json.errormsg"));
-//
-//        return bean;
-//    }
+        bean.setDiagnosticsDisabled(Boolean.parseBoolean(getProperty("json.diagnosticsDisabled")));
+        // set general error message
+        RestJsonExceptionResolver.setCustomMessage(getProperty("json.errormsg"));
+
+        return bean;
+    }
+    */
 
     @Bean
     public ViewResolver viewResolver() {

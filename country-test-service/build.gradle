@@ -32,7 +32,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'com.bmuschko.docker-remote-api'
 apply plugin: 'net.researchgate.release'
-apply plugin: com.bmuschko.gradle.nexus.NexusPlugin
+//apply plugin: com.bmuschko.gradle.nexus.NexusPlugin
 
 bootJar {
     launchScript()
@@ -258,15 +258,15 @@ task dockerStop(type: com.bmuschko.gradle.docker.tasks.container.DockerRemoveCon
 }
 
 
-nexus {
-    sign = false
-    repositoryUrl = "https://nexus.dminc-gtc.com/nexus/content/repositories/releases/"
-    snapshotRepositoryUrl = "https://nexus.dminc-gtc.com/nexus/content/repositories/snapshots/"
-}
+//nexus {
+//    sign = false
+//    repositoryUrl = "https://nexus.dminc-gtc.com/nexus/content/repositories/releases/"
+//    snapshotRepositoryUrl = "https://nexus.dminc-gtc.com/nexus/content/repositories/snapshots/"
+//}
 
-extraArchive {
-    javadoc = false
-    sources = false
-}
+//extraArchive {
+//    javadoc = false
+//    sources = false
+//}
 //project.tasks.uploadArchives.dependsOn dockerPush
 tasks.afterReleaseBuild.dependsOn dockerPush

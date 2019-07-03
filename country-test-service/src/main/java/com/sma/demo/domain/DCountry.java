@@ -1,18 +1,15 @@
 package com.sma.demo.domain;
 
-//import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
+
 import lombok.Builder;
 import lombok.Data;
 
-/**
- *
- */
+
 @Data
 @Builder
-//@Entity(name = "countries")
-public class DCountry {
-   // @Id
-    private String code;
 
+public class DCountry {
+
+    private String code;
     private String name;
 }

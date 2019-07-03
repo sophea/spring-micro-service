@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "Countries Management", description = "Microservice for Country Management")
 public class CountryController {
 
-   // @Autowired
-    //private CountryDSRepository dao;
     @Autowired
     private CountryService service;
 
@@ -35,8 +33,6 @@ public class CountryController {
     @RequestMapping(value = "/v1", method = RequestMethod.POST)
     @ApiOperation(value = "get all countries")
     public JCountry createCountry(@RequestBody JCountry request) {
-
-     //   dao.save(DCountry.builder().code(request.getCode()).name(request.getName()).build());
 
         return request;
     }
