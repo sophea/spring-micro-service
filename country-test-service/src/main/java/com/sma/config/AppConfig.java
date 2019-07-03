@@ -1,9 +1,9 @@
 package com.sma.config;
 
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Locale;
-
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,23 +14,15 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.ServletRequestBindingException;
-import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceView;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import com.dminc.common.tools.RestJsonExceptionResolver;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import lombok.extern.slf4j.Slf4j;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Locale;
 
 @Configuration
 @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -77,28 +69,28 @@ public class AppConfig implements WebMvcConfigurer {
 
     // -------------- View Stuff -----------------------
 
-    @Override
-    public void configureHandlerExceptionResolvers(final List<HandlerExceptionResolver> exceptionResolvers) {
-        exceptionResolvers.add(restJsonExceptionResolver());
-    }
+//    @Override
+//    public void configureHandlerExceptionResolvers(final List<HandlerExceptionResolver> exceptionResolvers) {
+//        exceptionResolvers.add(restJsonExceptionResolver());
+//    }
 
-    @Bean
-    public RestJsonExceptionResolver restJsonExceptionResolver() {
-        final RestJsonExceptionResolver bean = new RestJsonExceptionResolver();
-        RestJsonExceptionResolver.registerExceptionWithHTTPCode(org.springframework.beans.TypeMismatchException.class, 400);
-        RestJsonExceptionResolver.registerExceptionWithHTTPCode(MissingServletRequestParameterException.class, 400);
-        RestJsonExceptionResolver.registerExceptionWithHTTPCode(MethodArgumentNotValidException.class, 400);
-        RestJsonExceptionResolver.registerExceptionWithHTTPCode(ServletRequestBindingException.class, 400);
-        RestJsonExceptionResolver.registerExceptionWithHTTPCode(AccessDeniedException.class, 403);
-
-        bean.setOrder(1);
-
-        bean.setDiagnosticsDisabled(Boolean.parseBoolean(getProperty("json.diagnosticsDisabled")));
-        // set general error message
-        RestJsonExceptionResolver.setCustomMessage(getProperty("json.errormsg"));
-
-        return bean;
-    }
+//    @Bean
+//    public RestJsonExceptionResolver restJsonExceptionResolver() {
+//        final RestJsonExceptionResolver bean = new RestJsonExceptionResolver();
+//        RestJsonExceptionResolver.registerExceptionWithHTTPCode(org.springframework.beans.TypeMismatchException.class, 400);
+//        RestJsonExceptionResolver.registerExceptionWithHTTPCode(MissingServletRequestParameterException.class, 400);
+//        RestJsonExceptionResolver.registerExceptionWithHTTPCode(MethodArgumentNotValidException.class, 400);
+//        RestJsonExceptionResolver.registerExceptionWithHTTPCode(ServletRequestBindingException.class, 400);
+//        RestJsonExceptionResolver.registerExceptionWithHTTPCode(AccessDeniedException.class, 403);
+//
+//        bean.setOrder(1);
+//
+//        bean.setDiagnosticsDisabled(Boolean.parseBoolean(getProperty("json.diagnosticsDisabled")));
+//        // set general error message
+//        RestJsonExceptionResolver.setCustomMessage(getProperty("json.errormsg"));
+//
+//        return bean;
+//    }
 
     @Bean
     public ViewResolver viewResolver() {

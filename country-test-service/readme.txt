@@ -9,7 +9,7 @@
 go to browser : http://localhost:8080/api/healthcheck/v1
 
 #swagger REST-API docs
-http://localhost:8080/swagger-ui.html (dmi/secret)
+http://localhost:8080/swagger-ui.html (admin/secret)
 
 
 -- Run standalone jar file

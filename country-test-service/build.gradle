@@ -121,20 +121,25 @@ dependencies {
  //   compile("org.springframework.boot:spring-boot-devtools")
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-aop")
-    compile("org.springframework.cloud:spring-cloud-gcp-starter")
-    compile("org.springframework.cloud:spring-cloud-gcp-starter-data-datastore")
+   // compile("org.springframework.cloud:spring-cloud-gcp-starter")
+    //compile("org.springframework.cloud:spring-cloud-gcp-starter-data-datastore")
 
     compile("org.apache.httpcomponents:httpclient:4.5.6")
 
     compile ('org.springframework.security:spring-security-core:4.2.3.RELEASE'  ) {
         transitive = false
     }
-    compile ('com.dminc.backend.common.tools:backend-common-tools:1.0.14') {
-        changing = false
-    }
+    //compile ('com.dminc.backend.common.tools:backend-common-tools:1.0.14') {
+     //   changing = false
+   // }
     compile('org.apache.commons:commons-lang3:3.5')
     compile('io.springfox:springfox-swagger2:2.9.2')
     compile('io.springfox:springfox-swagger-ui:2.9.2')
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+// https://mvnrepository.com/artifact/ma.glasnost.orika/orika-core
+    compile group: 'ma.glasnost.orika', name: 'orika-core', version: '1.5.4'
+
     compile 'commons-codec:commons-codec:1.8'
     compile 'org.projectlombok:lombok:1.18.2'
     testCompile("junit:junit")
@@ -142,11 +147,11 @@ dependencies {
     testCompile('io.projectreactor:reactor-test')
 }
 
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
-}
+//dependencyManagement {
+//    imports {
+//        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+//    }
+//}
 
 class BuildInfoTask extends DefaultTask {
     @TaskAction

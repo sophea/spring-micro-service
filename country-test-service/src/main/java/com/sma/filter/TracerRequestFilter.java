@@ -1,31 +1,17 @@
 package com.sma.filter;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Enumeration;
-import java.util.Locale;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ReadListener;
-import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
-
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dminc.common.tools.exceptions.InternalBusinessException;
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
+import java.io.*;
+import java.util.Enumeration;
+import java.util.Locale;
 
 @SuppressWarnings("PMD")
 public class TracerRequestFilter implements Filter {
@@ -58,8 +44,7 @@ public class TracerRequestFilter implements Filter {
             } else {
                 chain.doFilter(request, res);
             }
-        }
-        finally {
+        } finally {
             final long finish = System.currentTimeMillis() - start;
             LOG.info(String.format("ip:[%s]:stop:http:[%s]:[%s]:response-http-status-code:[%s]:%s[ms]", ipAddress, req.getMethod(),
                     req.getRequestURI(), res.getStatus(), finish));
@@ -170,7 +155,7 @@ public class TracerRequestFilter implements Filter {
 
             @Override
             public void setReadListener(ReadListener listener) {
-                throw new InternalBusinessException("Not implemented");
+                //throw new InternalBusinessException("Not implemented");
             }
         }
     }
