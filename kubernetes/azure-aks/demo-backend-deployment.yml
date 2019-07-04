@@ -1,0 +1,54 @@
+
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: country-service-deployment
+  labels:
+    app: country-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: country-service
+        tier: backend
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+      - name: country-service
+
+        image: docker.io/sopheamak/country-service:1.0.4
+        volumeMounts:
+        - mountPath: /app/application.properties
+          name: config-file
+          subPath: app.properties
+        # This setting makes nodes pull the docker image every time before
+        # starting the pod. This is useful when debugging, but should be turned
+        # off in production.
+        #imagePullPolicy: Always
+        # The bookshelf process listens on port 8080 for web traffic by default.
+        ports:
+        - name: java-server
+          containerPort: 8080
+      volumes:
+      - name: config-file
+        configMap:
+          name: config-map
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: country-service
+  labels:
+    app: country-service
+    tier: backend
+
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: country-service
+    tier: backend
