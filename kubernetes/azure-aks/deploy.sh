@@ -16,8 +16,9 @@
 #select custer :  xxx-cluster-dev for dev2  ,  test-cluster for test
 #gcloud container clusters get-credentials $CLUSTER
 
-##deploy services : PODs
-#source demo-backend-deployment.sh
+###get credentials with group resources and clusterName
+az aks get-credentials --resource-group myResourceGroup --name myAKSCluster
+
 
 ##create service as load
 kubectl apply -f demo-backend-deployment.yml
